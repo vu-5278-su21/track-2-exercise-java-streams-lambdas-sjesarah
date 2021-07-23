@@ -1,5 +1,6 @@
 package edu.vanderbilt.cs.streams;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
@@ -37,8 +38,10 @@ public class StreamUtils {
         // 2. Think of how you could use IntStream.range()
         // 3. List.subLIst will be useful to you
         // 4. A windowSize < 1 should return an empty stream
-
-        return Stream.empty();
+    	
+    	if(windowSize < 1 || windowSize > data.size()) return Stream.empty();    	
+        return IntStream.range(0, data.size() - (windowSize - 1))
+        		.mapToObj(first -> data.subList(first, first + windowSize));
     }
 
     /**
@@ -69,7 +72,12 @@ public class StreamUtils {
             // You need to update this code here to
             // return the average of the property that
             // is extracted with the function `f`
-            return 0.0;
+        	double sum = 0;
+        	double average = 0;
+        	for(T element : window) {
+        		sum += element.toString().length();
+        	}
+            return sum / window.size();
         };
     }
 
